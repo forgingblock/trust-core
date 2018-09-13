@@ -67,12 +67,17 @@ public final class Litecoin: Bitcoin {
     }
 }
 
-public final class Tron: Bitcoin {
+public final class Tron: Blockchain {
     public override var coinType: Slip {
         return .tron
     }
-    public override var payToScriptHashAddressPrefix: UInt8 {
+
+    public var payToScriptHashAddressPrefix: UInt8 {
         return 0x41
+    }
+
+    open override func address(for publicKey: PublicKey) -> Address {
+        return publicKey.legacyBitcoinAddress(prefix: payToScriptHashAddressPrefix)
     }
 }
 
