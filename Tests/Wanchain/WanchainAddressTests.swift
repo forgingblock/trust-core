@@ -9,8 +9,8 @@ import TrustCore
 
 class WanchainAddressTests: XCTestCase {
 
-    func testDescription() {
-        let address = WanchainAddress(string: "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed")!
-        XCTAssertEqual(address.description, "0x5AaEB6053f3e94c9B9a09F33669435e7eF1bEaED")
-    }
+//    func testDescription() {
+//        let address = WanchainAddress(string: "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed")!
+//        XCTAssertEqual(address.description, "0x5AaEB6053f3e94c9B9a09F33669435e7eF1bEaED")
+//    }
 }
