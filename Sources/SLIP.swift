@@ -27,6 +27,7 @@ public struct SLIP {
         case wanchain = 5718350
         case icon = 74
         case eos = 194
+        case zilliqa = 313
     }
 
     /// Network type for coins with distinguished testnet keys derivation
