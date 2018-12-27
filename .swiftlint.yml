@@ -22,6 +22,7 @@ included:
   - Tests
 excluded: 
    - Sources/Tron/Protobuf
+   - Sources/Zilliqa/protobuf
 function_parameter_count:
   warning: 20
   error: 25
