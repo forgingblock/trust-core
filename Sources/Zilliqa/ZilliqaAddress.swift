@@ -10,6 +10,8 @@ public struct ZilliqaAddress: Address, Equatable {
 
     static let size = 20
 
+    private let checksumString: String
+
     public static func isValid(data: Data) -> Bool {
         return data.count == ZilliqaAddress.size
     }
@@ -29,6 +31,7 @@ public struct ZilliqaAddress: Address, Equatable {
             return nil
         }
         self.data = Data(hexString: string)!
+        self.checksumString = EthereumChecksum.computeString(for: data, type: .eip55)
     }
 
     public init?(data: Data) {
@@ -36,9 +39,10 @@ public struct ZilliqaAddress: Address, Equatable {
             return nil
         }
         self.data = data
+        self.checksumString = EthereumChecksum.computeString(for: data, type: .eip55)
     }
 
     public var description: String {
-        return "0x" + data.hexString
+        return checksumString
     }
 }
