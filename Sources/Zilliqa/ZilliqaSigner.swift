@@ -6,7 +6,7 @@
 
 import Foundation
 
-enum ZilliqaError: LocalizedError {
+public enum ZilliqaError: LocalizedError {
     case signError
 }
 
@@ -21,7 +21,7 @@ public struct ZilliqaSigner {
 
     public static func sign(_ data: Data, with privateKey: PrivateKey) throws -> Data {
         //FIXME: schnorr signature
-        let signature = Data()
+        let signature = Data(hexString: "0x486E170EC5ED8535293F78C3911A8DEC5FC3E5B0E6EF5F9B91D6C667E00363B609555C71097FBF445BA3927F61DF4155C544C72A6975C08AC8FF72ADC9415A1C")!
         return signature
     }
 }
@@ -61,7 +61,7 @@ extension ZilliqaTransaction {
 extension ZilliqaTransaction: Encodable {
 
     enum CodingKeys: String, CodingKey {
-        case version, toAddr, nonce, senderPubKey, amount, gasPrice, gasLimit, code, data, signature
+        case version, toAddr, nonce, pubKey, amount, gasPrice, gasLimit, code, data, signature
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -77,6 +77,6 @@ extension ZilliqaTransaction: Encodable {
         try container.encode(code, forKey: .code)
         try container.encode(data, forKey: .data)
         try container.encode(signature.hexString, forKey: .signature)
-        try container.encode(pubKey.hexString, forKey: .senderPubKey)
+        try container.encode(pubKey.hexString, forKey: .pubKey)
     }
 }

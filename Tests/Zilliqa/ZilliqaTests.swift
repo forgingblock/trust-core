@@ -37,10 +37,7 @@ class ZilliqaTests: XCTestCase {
             nonce: BigInt(2),
             gasPrice: BigInt(1000000000),
             gasLimit: BigInt(1),
-            code: Data(),
-            data: Data(),
-            pubKey: pubKey.data,
-            signature: Data()
+            pubKey: pubKey.data
         )
 
         // swiftlint:disable:next line_length

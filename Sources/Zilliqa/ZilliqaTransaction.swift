@@ -30,10 +30,10 @@ public struct ZilliqaTransaction {
         nonce: BigInt,
         gasPrice: BigInt,
         gasLimit: BigInt,
-        code: Data,
-        data: Data,
-        pubKey: Data,
-        signature: Data
+        code: Data = Data(),
+        data: Data = Data(),
+        pubKey: Data = Data(),
+        signature: Data = Data()
     ) {
         self.version = version
         self.to = to
