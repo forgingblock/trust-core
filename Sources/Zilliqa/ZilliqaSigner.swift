@@ -11,30 +11,15 @@ enum ZilliqaError: LocalizedError {
 }
 
 public struct ZilliqaSigner {
-    func sign(_ tx: inout ZilliqaTransaction, with privateKey: PrivateKey) throws {
-        guard let amount = tx.value.serialize(bitWidth: 16) else {
-            throw ZilliqaError.signError
-        }
-
+    public static func sign(_ tx: inout ZilliqaTransaction, with privateKey: PrivateKey) throws {
         let pubKey = privateKey.publicKey(compressed: true)
-        let serialized = try ZilliqaMessage_ProtoTransactionCoreInfo.with {
-            $0.amount = amount.byteArray
-            $0.version = UInt32(tx.version)
-            $0.nonce = UInt64(tx.nonce)
-            $0.toaddr = tx.to.data
-            $0.senderpubkey = pubKey.data.byteArray
-            $0.gasprice = String(tx.gasPrice).data(using: .utf8)!.byteArray
-            $0.gaslimit = UInt64(tx.gasLimit)
-            $0.code = tx.code
-            $0.data = tx.data
-        }.serializedData()
+        tx.pubKey = pubKey.data
 
-        let signature = try sign(serialized, with: privateKey)
+        let signature = try sign(tx.serialize(), with: privateKey)
         tx.signature = signature
-        tx.pubKey = pubKey
     }
 
-    func sign(_ data: Data, with privateKey: PrivateKey) throws -> Data {
+    public static func sign(_ data: Data, with privateKey: PrivateKey) throws -> Data {
         //FIXME: schnorr signature
         let signature = Data()
         return signature
@@ -45,6 +30,30 @@ extension Data {
     var byteArray: ZilliqaMessage_ByteArray {
         return ZilliqaMessage_ByteArray.with {
             $0.data = self
+        }
+    }
+}
+
+extension ZilliqaTransaction {
+    public func serialize() -> Data {
+        do {
+            guard let amount = value.serialize(bitWidth: 16),
+                let gasPrice = gasPrice.serialize(bitWidth: 16) else {
+                    throw ZilliqaError.signError
+            }
+            return try ZilliqaMessage_ProtoTransactionCoreInfo.with {
+                $0.amount = amount.byteArray
+                $0.version = UInt32(version)
+                $0.nonce = UInt64(nonce)
+                $0.toaddr = to.data
+                $0.senderpubkey = pubKey.byteArray
+                $0.gasprice = gasPrice.byteArray
+                $0.gaslimit = UInt64(gasLimit)
+                $0.code = code
+                $0.data = data
+            }.serializedData()
+        } catch {
+            return Data()
         }
     }
 }
@@ -68,6 +77,6 @@ extension ZilliqaTransaction: Encodable {
         try container.encode(code, forKey: .code)
         try container.encode(data, forKey: .data)
         try container.encode(signature.hexString, forKey: .signature)
-        try container.encode(pubKey.compressed.data.hexString, forKey: .senderPubKey)
+        try container.encode(pubKey.hexString, forKey: .senderPubKey)
     }
 }

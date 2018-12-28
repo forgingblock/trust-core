@@ -20,7 +20,7 @@ public struct ZilliqaTransaction {
     public let code: Data
     public let data: Data
 
-    public var pubKey: PublicKey
+    public var pubKey: Data
     public var signature: Data
 
     public init(
@@ -32,7 +32,7 @@ public struct ZilliqaTransaction {
         gasLimit: BigInt,
         code: Data,
         data: Data,
-        pubKey: PublicKey,
+        pubKey: Data,
         signature: Data
     ) {
         self.version = version

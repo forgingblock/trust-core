@@ -27,5 +27,23 @@ class ZilliqaTests: XCTestCase {
         XCTAssertEqual(address.description, ZilliqaAddress(string: "0x448261915a80CDe9bde7C7A791685200d3A0BF4e")?.description)
         XCTAssertEqual(address2.description.lowercased(), "0x7fccacf066a5f26ee3affc2ed1fa9810deaa632c")
     }
+
+    func testSerializeZilliqaTransaction() throws {
+        let pubKey = PublicKey(data: Data(hexString: "0x029D25B68A18442590E113132A34BB524695C4291D2C49ABF2E4CDD7D98DB862C3")!)!
+        let tx = ZilliqaTransaction(
+            version: 1,
+            to: ZilliqaAddress(string: "0x88af5ba10796d9091d6893eed4db23ef0bbbca37")!,
+            value: BigInt(100000000000000),
+            nonce: BigInt(2),
+            gasPrice: BigInt(1000000000),
+            gasLimit: BigInt(1),
+            code: Data(),
+            data: Data(),
+            pubKey: pubKey.data,
+            signature: Data()
+        )
+
+        // swiftlint:disable:next line_length
+        XCTAssertEqual(tx.serialize().hexString, "080110021a1488af5ba10796d9091d6893eed4db23ef0bbbca3722230a21029d25b68a18442590e113132a34bb524695c4291d2c49abf2e4cdd7d98db862c32a120a10000000000000000000005af3107a400032120a100000000000000000000000003b9aca00380142004a00")
     }
 }
