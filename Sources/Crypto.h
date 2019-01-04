@@ -40,6 +40,14 @@
 /// @return whether the signature is valid
 + (BOOL)verifySignature:(nonnull NSData *)signature message:(nonnull NSData *)message publicKey:(nonnull NSData *)publicKey NS_SWIFT_NAME(verify(signature:message:publicKey:));
 
+/// Verifies a Zilliqa schnorr signature.
+///
+/// @param signature signature to verify
+/// @param message message to verify
+/// @param publicKey public key to verify with
+/// @return whether the signature is valid
++ (BOOL)verifySchnorrSignature:(nonnull NSData *)signature message:(nonnull NSData *)message publicKey:(nonnull NSData *)publicKey NS_SWIFT_NAME(verifySchnorr(signature:message:publicKey:));
+
 /// Recovers the public key from a signature and a message hash.
 ///
 /// @param signature signature of a signed message

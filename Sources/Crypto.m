@@ -5,6 +5,7 @@
 // file LICENSE at the root of the source code distribution tree.
 
 #import "Crypto.h"
+#import "schnorr.h"
 #import <TrezorCrypto/TrezorCrypto.h>
 
 @implementation Crypto
@@ -48,6 +49,10 @@
 
 + (BOOL)verifySignature:(nonnull NSData *)signature message:(nonnull NSData *)message publicKey:(nonnull NSData *)publicKey {
     return ecdsa_verify_digest(&secp256k1, publicKey.bytes, signature.bytes, message.bytes) == 0;
+}
+
++ (BOOL)verifySchnorrSignature:(nonnull NSData *)signature message:(nonnull NSData *)message publicKey:(nonnull NSData *)publicKey {
+    return schnorr_verify_message(&secp256k1, publicKey.bytes, signature.bytes, message.bytes, message.length) == 0;
 }
 
 + (nullable NSData *)recoverPubkeyFrom:(nonnull NSData *)signature message:(nonnull NSData *)message
